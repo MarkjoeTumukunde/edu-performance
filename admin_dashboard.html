@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Educational Performance Tracking</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <header id="header">
+        <nav>
+            <div class="nav-container">
+                <a href="index.html"><img src="Images/home2.png" alt="Logo" id="logo"></a>
+                <p class="welcome-msg">Hi, <strong id="user-name">User</strong></p>
+
+                <script>
+                const name = sessionStorage.getItem("user_name") || "User";
+                document.getElementById("user-name").textContent = name;
+                </script>
+                <span>ADMIN DASHBOARD</span>
+                <div class="nav-buttons">
+                    <a href="login.html"><button>LOGOUT</button></a> 
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="dashboard-main">
+        <section class="dashboard-buttons">
+            <a href="admin_view_activities.php" class="dashboard-button view-grades">View Activities</a>
+            <a href="admin_view_users.php" class="dashboard-button attendance-record">View Users</a>
+            <a href="manage_users.php" class="dashboard-button performance-trends">Manage Users</a>
+            <a href="admin_view_student_performance.php" class="dashboard-button view-activities">Student Performance</a>
+            <a href="admin_set_parameters.php" class="dashboard-button performance-trends">Set System Parameters</a>
+            <a href="view_complaints.php" class="dashboard-button submit-complaint dropdown-wrapper">View Complaints</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>All rights reserved &copy; 2025 Markjoe | Roland</p>
+    </footer>
+
+    <noscript>
+        <style>
+          .welcome-msg { display: none; }
+        </style>
+        <p style="text-align: center; color: red;">JavaScript is required to view this dashboard correctly.</p>
+      </noscript>      
+</body>
+</html>

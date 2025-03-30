@@ -1,0 +1,43 @@
+<!-- view_students.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registered Students - Educational Performance Tracking</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header id="header">
+        <nav>
+            <div class="nav-container">
+                <a href="lecturer_dashboard.html"><img src="Images/home2.png" alt="Logo" id="logo"></a>
+                <span>REGISTERED STUDENTS</span>
+                <div class="nav-buttons">
+                    <a href="lecturer_dashboard.html"><button>BACK</button></a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="dashboard-main">
+        <section class="attendance-container">
+            <h2>📄 List of Registered Students</h2>
+            <div id="students-table"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>All rights reserved &copy; 2025 Markjoe | Roland</p>
+    </footer>
+
+    <script>
+        // Load student data from view_students.php
+        fetch('view_students.php')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('students-table').innerHTML = data;
+            });
+    </script>
+</body>
+</html>

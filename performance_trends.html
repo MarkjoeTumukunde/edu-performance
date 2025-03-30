@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Performance Trends - Educational Performance Tracking</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header id="header">
+    <nav>
+      <div class="nav-container">
+        <a href="index.html"><img src="Images/home2.png" alt="Logo" id="logo" /></a>
+        <span>PERFORMANCE TRENDS</span>
+        <div class="nav-buttons">
+          <a href="student_dashboard.html"><button>BACK</button></a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="dashboard-main">
+    <section class="attendance-container"> <!-- Reusing your styled container -->
+      <h2>Performance Trends</h2>
+
+      <!-- Optional filter -->
+      <div style="text-align: center; margin-bottom: 20px; margin-right: 230px;">
+        <select id="semesterFilter" class="table-input2">
+          <option value="all">All Courses</option>
+          <!-- More options can be loaded dynamically -->
+        </select>
+      </div>
+
+      <!-- Chart Canvas -->
+      <div style="width: 100%; max-width: 800px; margin: 0 auto;">
+        <canvas id="trendChart"></canvas>
+      </div>
+      <div id="feedback" style="margin-top: 20px; font-size: 16px; display: flex; margin-left: 150px;"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>All rights reserved &copy; 2025 Markjoe | Roland</p>
+  </footer>
+
+  <!-- Chart initialization script -->
+  <script>
+    const studentId = "<?php echo $_SESSION['student_id'] ?? 'NO_SESSION'; ?>";
+    console.log("Student ID:", studentId); // Debug log
+  
+    function fetchChartData() {
+      fetch("get_trend_data.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams({
+          student_id: studentId
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log("Received from PHP:", data);
+  
+        if (data.error) {
+          alert("Error from server: " + data.error);
+          return;
+        }
+  
+        // Update chart
+        const backgroundColors = data.marks.map(mark => {
+        if (mark >= 80) return "green";       // Excellent
+        else if (mark >= 65) return "#007bff"; // Good (blue)
+        else if (mark >= 50) return "orange";  // Average
+        else return "red";                    // Retake
+      });
+
+
+        trendChart.data.labels = data.labels;
+        trendChart.data.datasets[0].data = data.marks;
+        trendChart.data.datasets[0].backgroundColor = backgroundColors;
+        trendChart.update();
+
+  
+        // Generate performance feedback
+        const feedback = generateFeedback(data.labels, data.marks);
+        document.getElementById("feedback").innerHTML = feedback;
+      })
+      .catch(err => {
+        console.error("Fetch failed:", err);
+        alert("JavaScript Fetch error: " + err.message);
+      });
+    }
+  
+    // Generate improvement suggestions
+    function generateFeedback(labels, marks) {
+      let retakes = [];
+      let weak = [];
+  
+      marks.forEach((mark, index) => {
+        const subject = labels[index];
+        if (mark < 50) {
+          retakes.push(subject);
+        } else if (mark < 65) {
+          weak.push(subject);
+        }
+      });
+  
+      if (retakes.length === 0 && weak.length === 0) {
+        return "<p style='color: green;'><strong>Great job!</strong> You are performing well in all subjects.</p>";
+      }
+  
+      let html = "<h4 style='margin-top:20px;'>Suggestions:</h4><ul>";
+      if (retakes.length > 0) {
+        html += "<li style='color: red;'>You need to retake: <strong>" + retakes.join(", ") + "</strong></li>";
+      }
+      if (weak.length > 0) {
+        html += "<li style='color: #12254F;'>Consider improving in: <strong>" + weak.join(", ") + "</strong></li>";
+      }
+      html += "</ul>";
+      return html;
+    }
+  
+    const ctx = document.getElementById("trendChart").getContext("2d");
+    const trendChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: [],
+        datasets: [{
+          label: "Marks",
+          data: [],
+          backgroundColor: "#007bff",
+          borderRadius: 5
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: "Student Performance by Course"
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            title: {
+              display: true,
+              text: 'Marks'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Course Units'
+            }
+          }
+        }
+      }
+    });
+  
+    // ✅ Load data on page load
+    fetchChartData();
+  </script>
+  
+  
+  
+  
+  
+  
+</body>
+</html>

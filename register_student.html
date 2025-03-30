@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Educational Performance Tracking System</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+  <header id="header">
+    <nav>
+        <div class="nav-container">
+            <a href="index.html"><img src="Images/home2.png" alt="Logo" id="logo"></a>
+            <span>STUDENT REGISTRATION</span>
+            <div class="nav-buttons">
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+
+  <section class="register-container">
+    <div class="register-box">
+      <h2><i class="fa fa-user-plus"></i> Register</h2>
+
+        <form action="register_student.php" method="post">
+            <div class="row">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="row">
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender" required>
+                  <option value="" disabled selected>Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+            <div class="row">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="row">
+                <label for="course">Course:</label>
+                <input type="text" id="course" name="course" required>
+            </div>
+
+            <div class="row">
+                <label for="year">Year:</label>
+                <input type="text" id="year" name="year" required>
+            </div>
+
+            <div class="row">
+                <label for="role">Activities:</label>
+                <div id="activities">
+                    <label>Basketball<input type="checkbox" name="role[]" value="basketball"></label>
+                    <label>Football<input type="checkbox" name="role[]" value="football"></label>
+                    <label>Volleyball<input type="checkbox" name="role[]" value="volleyball"></label>
+                    <label>Athletics<input type="checkbox" name="role[]" value="athletics"></label>
+                    <label>Skating<input type="checkbox" name="role[]" value="sketting"></label>
+                    <label>Swimming<input type="checkbox" name="role[]" value="swimming"></label>
+                </div>
+            </div>
+            
+
+            <div class="row">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <button type="submit">Sign Up</button>
+            <p>Already have an account? <a href="login.html">Login</a></p>
+        </form>
+    </div>
+</section>
+
+    <footer>
+        <p>All rights reserved &copy; 2025 Markjoe | Roland</p>
+    </footer>
+
+    <div id="message-box"></div>
+    <script src="form-messages.js"></script>
+
+</body>
+</html>

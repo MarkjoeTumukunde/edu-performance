@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Educational Performance Tracking</title>
+    <link rel="stylesheet" href="/edu-performance/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <header id="header">
+        <nav>
+            <div class="nav-container">
+                <a href="index.html"><img src="Images/home2.png" alt="Logo" id="logo"></a>
+                <p class="welcome-msg">Hi, <strong id="user-name">User</strong></p>
+
+                <script>
+                const name = sessionStorage.getItem("user_name") || "User";
+                document.getElementById("user-name").textContent = name;
+                </script>
+
+
+                <span>STUDENT DASHBOARD</span>
+                <div class="nav-buttons">
+                    <a href="login.html" onclick="sessionStorage.clear();"><button>LOGOUT</button></a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="dashboard-main">
+        <section class="dashboard-buttons">
+            <a href="fetch_student_grades.php" class="dashboard-button view-grades">View Grades</a>
+            <a href="view_attendance_result.php" class="dashboard-button attendance-record">Attendance Record</a>
+            <a href="performance_trends.html" class="dashboard-button performance-trends">Performance Trends</a>
+            <a href="view_activities.php" class="dashboard-button view-activities">View Activities</a>
+            <div class="dropdown-wrapper">
+                <a href="#" class="dashboard-button submit-complaints">Complaints ▾</a>
+                <div class="dropdown-menu">
+                    <a href="complaint.html">Submit a Complaint</a>
+                  <a href="view_my_complaints.php">View My Complaints</a>
+                </div>
+              </div>              
+              
+        </section>
+    </main>
+
+
+    <footer>
+        <p>All rights reserved &copy; 2025 Markjoe | Roland</p>
+    </footer>
+
+    <script>
+        document.querySelector('.submit-complaints').addEventListener('click', function(e) {
+          e.preventDefault();
+        });
+      </script>
+      
+</body>
+</html>

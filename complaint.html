@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Form - Educational Performance Tracking</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <header id="header">
+        <nav>
+            <div class="nav-container">
+                <a href="index.html"><img src="Images/home2.png" alt="Logo" id="logo"></a>
+                <span>COMPLAINT FORM</span>
+                <div class="nav-buttons">
+                    <a href="student_dashboard.html"><button>BACK</button></a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="complaint-main">
+        <section class="complaint-form-container">
+            <h2>Complaint Form</h2>
+            <form class="complaint-form" method="POST" action="submit_complaint.php">
+                <!-- Hidden ID from session -->
+                <input type="hidden" name="student_id" value="<?php echo $_SESSION['student_id'] ?? ''; ?>">
+            
+            <div class="form-row">
+                    <label for="complaint_type">Complaint Type:</label>
+                    <select id="complaint_type" name="complaint_type" required
+                            style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;  appearance: none; /* Remove default OS styling */
+                            -webkit-appearance: none; /* Safari */
+                            -moz-appearance: none; /* Firefox */
+                            margin-left: 20px;">
+                      <option value="" disabled selected>Select type</option>
+                      <option value="Grade Issue">Grade Issue</option>
+                      <option value="Attendance">Attendance</option>
+                      <option value="Lecturer Behavior">Lecturer Behavior</option>
+                      <option value="Timetable Conflict">Timetable Conflict</option>
+                      <option value="System Issue">System Issue</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  
+            
+                <div class="form-row">
+                    <label for="complaint">Complaint:</label>
+                    <textarea id="complaint" name="complaint" rows="5" required></textarea>
+                </div>
+            
+                <button type="submit">Submit</button>
+            </form>            
+        </section>
+    </main>
+
+    <footer>
+        <p>All rights reserved &copy; 2025 Markjoe | Roland</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Mark Sheet - Educational Performance Tracking</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <header id="header">
+        <nav>
+            <div class="nav-container">
+                <a href="index.html"><img src="Images/home2.png" alt="Logo" id="logo"></a>
+                <span>UPDATE STUDENT MARKS</span>
+                <div class="nav-buttons">
+                    <a href="lecturer_dashboard.html"><button>BACK</button></a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="marksheet-main">
+        <section class="marksheet-container">
+            <h2>Update Student Marks</h2>
+            <form class="marksheet-form">
+                <div class="form-row">
+                    <label for="student_name">Student Name:</label>
+                    <input type="text" id="student_name" name="student_name" required>
+                </div>
+                <div class="form-row">
+                    <label for="student_id">Student ID:</label>
+                    <input type="text" id="student_id" name="student_id" required>
+                </div>
+                <div class="form-row">
+                    <label for="course">Course:</label>
+                    <input type="text" id="course" name="course" required>
+                </div>
+                <div class="marks-table">
+                  <div class="table-row">
+                    <input type="text" class="table-input course_unit" placeholder="Course Unit">
+                    <input type="text" class="table-input course_marks" placeholder="Course Marks">
+                    <input type="text" class="table-input" placeholder="CU">
+                  </div>
+                  <!-- Repeat .table-row as needed -->
+                </div>
+                <button type="submit">Update Marks</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>All rights reserved &copy; 2025 Markjoe | Roland</p>
+    </footer>
+</body>
+</html>

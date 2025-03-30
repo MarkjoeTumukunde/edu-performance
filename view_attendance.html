@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>View Attendance - Educational Performance Tracking</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header id="header">
+    <nav>
+      <div class="nav-container">
+        <a href="index.html"><img src="Images/home2.png" alt="Logo" id="logo" /></a>
+        <span>VIEW ATTENDANCE</span>
+        <div class="nav-buttons">
+          <a href="student_dashboard.html"><button>BACK</button></a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="attendance-main">
+    <section class="attendance-container">
+      <h2>Check Your Attendance</h2>
+      <form action="view_attendance_result.php" method="post">
+        <input type="text" name="student_id" placeholder="Enter your Student ID" required style="padding: 10px; width: 80%; max-width: 400px; margin-bottom: 20px;">
+        <br>
+        <button type="submit" class="attendance_sub">View Attendance</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>All rights reserved &copy; 2025 Markjoe | Roland</p>
+  </footer>
+</body>
+</html>

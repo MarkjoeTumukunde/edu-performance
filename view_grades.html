@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Grades - Educational Performance Tracking</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <header id="header">
+        <nav>
+            <div class="nav-container">
+                <a href="index.html"><img src="Images/home2.png" alt="Logo" id="logo"></a>
+                <span>VIEW GRADES</span>
+                <div class="nav-buttons">
+                    <a href="student_dashboard.html"><button>BACK</button></a> 
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="marksheet-main">
+        <section class="marksheet-container">
+            <h2>Your Academic Performance</h2>
+            <form
+            action="fetch_student_grades.php" method="get" target="_blank" class="marksheet-form">
+              <div class="form-row">
+                <label for="student_id">Enter your Student ID:</label>
+                <input type="text" id="student_id" name="student_id" required>
+              </div>
+              <button type="submit" class="register-btn">Fetch Grades</button>
+            </form>
+            
+            
+
+            <div id="grades-display">
+                <!-- Grades will be shown here after PHP fetch -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>All rights reserved &copy; 2025 Markjoe | Roland</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Mark Sheet - Educational Performance Tracking</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+</head>
+<body>
+  <header id="header">
+    <nav>
+      <div class="nav-container">
+        <a href="index.html"><img src="Images/home2.png" alt="Logo" id="logo" /></a>
+        <span>STUDENT MARK SHEET</span>
+        <div class="nav-buttons">
+          <a href="lecturer_dashboard.html"><button>BACK</button></a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="marksheet-main">
+    <section class="marksheet-container">
+      <h2>Student Mark Sheet</h2>
+      <form class="marksheet-form" action="submit_marks.php" method="post">
+        <div class="form-row">
+          <label for="student_name">Student Name:</label>
+          <input type="text" id="student_name" name="student_name" required />
+        </div>
+        <div class="form-row">
+          <label for="student_id">Student ID:</label>
+          <input type="text" id="student_id" name="student_id" required />
+        </div>
+        <div class="form-row" id="course-field">
+          <label for="course">Course:</label>
+          <input type="text" id="course" name="course" required />
+        </div>
+        <div class="form-row" id="year-field">
+          <label for="year">Year:</label>
+          <input type="text" id="year" name="year" readonly required />
+        </div>
+        
+
+        <div class="marks-table"><div class="marks-table">
+          <div class="table-row">
+            <input type="text" id="unit-field" class="table-input course_unit" name="unit[]" placeholder="Course Unit" readonly required />
+        
+            <div class="course-marks-cell">
+              <input type="text" class="table-input course_marks" name="mark[]" placeholder="Course Marks" required />
+            </div>
+        
+            <div class="cu-cell">
+              <input type="text" class="table-input course-CU" name="cu[]" placeholder="CU" required />
+            </div>
+          </div>
+        </div>
+        
+
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>All rights reserved &copy; 2025 Markjoe | Roland</p>
+  </footer>
+
+  <script>
+    // Auto-fill student name, course, and year
+    document.getElementById("student_id").addEventListener("blur", function () {
+      const studentId = this.value.trim();
+      if (!studentId) return;
+  
+      fetch("get_student_details.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ student_id: studentId }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.error) {
+            alert("\u274C " + data.error);
+            document.getElementById("student_name").value = "";
+            document.getElementById("course").value = "";
+            document.getElementById("year").value = "";
+          } else {
+            document.getElementById("student_name").value = data.name;
+            document.getElementById("course").value = data.course;
+            document.getElementById("year").value = data.year || "";
+          }
+        })
+        .catch((err) => {
+          alert("Fetch error: " + err);
+        });
+    });
+  
+    // Load lecturer's course units
+    window.addEventListener("DOMContentLoaded", function () {
+      const unitField = document.getElementById("unit-field");
+  
+      fetch("get_lecturer_courses.php")
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.courses && data.courses.length > 0) {
+            if (data.courses.length === 1) {
+              unitField.outerHTML = `<input type="text" class="table-input course_unit" name="unit[]" value="${data.courses[0]}" readonly required />`;
+            } else {
+              let selectHTML = `<select class="table-input course_unit" name="unit[]" required>
+                                  <option value="" disabled selected>Select Course Unit</option>`;
+              data.courses.forEach(unit => {
+                selectHTML += `<option value="${unit}">${unit}</option>`;
+              });
+              selectHTML += `</select>`;
+              unitField.outerHTML = selectHTML;
+            }
+          } else {
+            unitField.outerHTML = `<input type="text" class="table-input course_unit" name="unit[]" value="No Units Assigned" readonly />`;
+          }
+        })
+        .catch((err) => {
+          console.error("Course units fetch error:", err);
+          unitField.outerHTML = `<input type="text" class="table-input course_unit" name="unit[]" value="Error loading" readonly />`;
+        });
+    });
+  </script>
+  
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecturer Dashboard - Educational Performance Tracking</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <header id="header">
+        <nav>
+            <div class="nav-container">
+                <a href="index.html"><img src="Images/home2.png" alt="Logo" id="logo"></a>
+                <p class="welcome-msg">Hi, <strong id="user-name">User</strong></p>
+
+                <script>
+                const name = sessionStorage.getItem("user_name") || "User";
+                document.getElementById("user-name").textContent = name;
+                </script>
+                <span>LECTURER DASHBOARD</span>
+                <div class="nav-buttons">
+                    <a href="login.html"><button>LOGOUT</button></a> 
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="dashboard-main">
+        <section class="dashboard-buttons">
+            <a href="view_students.html" class="dashboard-button attendance-record">Registered Students</a>
+            <a href="student_mark_sheet.html" class="dashboard-button view-grades">Add Marks</a>
+            <a href="attendance.html" class="dashboard-button performance-trends">Attendance Records</a>
+            <a href="lecturer_view_performance.php" class="dashboard-button view-activities">Student Performance</a>
+            <a href="lecturer_view_activities.php" class="dashboard-button performance-trends">View Activities</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>All rights reserved &copy; 2025 Markjoe | Roland</p>
+    </footer>
+</body>
+</html>

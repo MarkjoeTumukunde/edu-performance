@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Educational Performance Tracking System</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+  <header id="header">
+    <nav>
+      <div class="nav-container">
+        <a href="index.html"><img src="Images/home2.png" alt="Logo" id="logo"></a>
+        <span>ADMIN REGISTRATION</span>
+        <div class="nav-buttons"></div>
+      </div>
+    </nav>
+  </header>
+
+  <section class="register-container">
+    <div class="register-box">
+      <h2><i class="fa fa-user-plus"></i> Register</h2>
+
+      <form action="register_admin.php" method="post">
+        <div class="row">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+      
+        <div class="row">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+      
+        <!-- ✅ Gender Field -->
+        <div class="row">
+          <label for="gender">Gender:</label>
+          <select id="gender" name="gender" required>
+            <option value="" disabled selected>Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      
+        <div class="row">
+          <label for="role">Role:</label>
+          <select id="role" name="role" required onchange="toggleCourseUnits()">
+            <option value="" disabled selected>Select a Role</option>
+            <option value="lecturer">Lecturer</option>
+            <option value="it">IT</option>
+            <option value="administrator">Administrator</option>
+          </select>
+        </div>
+      
+        <div class="row" id="course-units-row" style="display: none;">
+          <label for="course_units">Course Units:</label>
+          <input type="text" id="course_units" name="course_units" placeholder="e.g. Data Warehousing, Computer Systems Security, Object-Oriented Programming">
+        </div>
+      
+        <div class="row">
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" required>
+        </div>
+      
+        <button type="submit">Sign Up</button>
+        <p>Already have an account? <a href="login.html">Login</a></p>
+      </form>
+      
+    </div>
+  </section>
+
+  <footer>
+    <p>All rights reserved &copy; 2025 Markjoe | Roland</p>
+  </footer>
+
+  <script>
+    function toggleCourseUnits() {
+      const role = document.getElementById("role").value;
+      const row = document.getElementById("course-units-row");
+      row.style.display = role === "lecturer" ? "flex" : "none";
+    }
+  </script>
+</body>
+</html>

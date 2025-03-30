@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Attendance Records - Educational Performance Tracking</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+</head>
+<body>
+  <header id="header">
+    <nav>
+      <div class="nav-container">
+        <a href="index.html"><img src="Images/home2.png" alt="Logo" id="logo" /></a>
+        <span>ATTENDANCE RECORDS</span>
+        <div class="nav-buttons">
+          <a href="lecturer_dashboard.html"><button>BACK</button></a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="attendance-main">
+    <section class="attendance-container">
+      <h2>Attendance Records</h2>
+
+      <form action="submit_attendance.php" method="post">
+        <div class="attendance-table">
+          <div class="table-header">
+            <div class="table-cell">Student ID</div>
+            <div class="table-cell">Name</div>
+            <div class="table-cell">Course Unit</div>
+            <div class="table-cell">Status</div>
+            <div class="table-cell">Date</div>
+            <div class="table-cell">Lecturer</div>
+          </div>
+
+          <!-- 4 rows -->
+          <?php for ($i = 0; $i < 4; $i++): ?>
+          <div class="table-row">
+            <div class="table-cell"><input type="text" class="table-input" name="student_id[]" placeholder="ID" /></div>
+            <div class="table-cell"><input type="text" class="table-input" name="student_name[]" placeholder="Name" /></div>
+            <div class="table-cell"><input type="text" class="table-input" name="course_unit[]" placeholder="Course Unit" /></div>
+            <div class="table-cell">
+              <select class="table-input" name="status[]">
+                <option value="">Select Status</option> <!-- ✅ Fixed -->
+                <option value="present">Present</option>
+                <option value="absent">Absent</option>
+              </select>
+            </div>
+            <div class="table-cell"><input type="date" class="table-input" name="date[]" /></div>
+            <div class="table-cell"><input type="text" class="table-input" name="lecturer[]" placeholder="Lecturer" /></div>
+          </div>
+          <?php endfor; ?>
+        </div>
+
+        <button type="submit" class="attendance_sub">Submit</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>All rights reserved &copy; 2025 Markjoe | Roland</p>
+  </footer>
+</body>
+</html>
