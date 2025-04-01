@@ -62,5 +62,34 @@
   <footer>
     <p>All rights reserved &copy; 2025 Markjoe | Roland</p>
   </footer>
+
+  <script>
+    document.querySelectorAll('input[name="student_id[]"]').forEach((input, index) => {
+      input.addEventListener('blur', function () {
+        const studentId = this.value.trim();
+        if (!studentId) return;
+  
+        fetch('get_student_details.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({ student_id: studentId })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (!data.error) {
+            document.querySelectorAll('input[name="student_name[]"]')[index].value = data.name;
+            document.querySelectorAll('input[name="course_unit[]"]')[index].value = data.course;
+          } else {
+            alert("❌ " + data.error);
+          }
+        })
+        .catch(err => {
+          console.error("Fetch Error:", err);
+          alert("Error fetching student data.");
+        });
+      });
+    });
+  </script>
+  
 </body>
 </html>
