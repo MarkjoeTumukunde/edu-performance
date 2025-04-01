@@ -120,6 +120,71 @@ while ($student = $students->fetch_assoc()) {
     .action-btn:hover {
       background-color: #218838;
     }
+
+    @media (max-width: 768px) {
+      .search-container {
+        width: 95%;
+        margin: 20px auto;
+        text-align: center;
+      }
+
+      .search-container input {
+        width: 90%;
+        margin-bottom: 20px;
+      }
+
+      .search-container button {
+        width: 90%;
+        margin: 10px auto 0 auto;
+        display: block;
+      }
+
+      .performance-table {
+        width: 100%;
+        font-size: 14px;
+        overflow-x: auto;
+        display: block;
+      }
+
+      .performance-table th, .performance-table td {
+        padding: 10px;
+        word-break: break-word;
+      }
+
+      .nav-container {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+      }
+
+      .nav-buttons {
+        width: 100%;
+        text-align: right;
+        margin-top: 10px;
+      }
+
+      #logo {
+        width: 40px;
+        height: auto;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .performance-table th, .performance-table td {
+        padding: 8px;
+        font-size: 13px;
+      }
+
+      .search-container input,
+      .search-container button {
+        font-size: 14px;
+      }
+
+      .action-btn {
+        padding: 5px 8px;
+        font-size: 13px;
+      }
+    }
   </style>
 </head>
 <body>

@@ -864,3 +864,108 @@ footer {
   z-index: 1000;
   height: 30px;
 }
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .register-box, .login-box, .marksheet-container, .complaint-form-container, .param-box, .add-user-box, .attendance-container {
+    width: 90% !important;
+    padding: 20px !important;
+  }
+
+  .register-box label,
+  .register-box input,
+  .register-box select,
+  .register-box textarea,
+  .login-box input,
+  .marksheet-form input,
+  .marksheet-form label,
+  .complaint-form label,
+  .complaint-form input,
+  .complaint-form textarea {
+    width: 100% !important;
+    display: block;
+  }
+
+  .register-box .row {
+    flex-direction: column !important;
+    align-items: flex-start;
+  }
+
+  nav span {
+    font-size: 16px;
+    margin-left: 0 !important;
+  }
+
+  .dashboard-main {
+    flex-direction: column;
+    padding: 50px 0;
+  }
+
+  .dashboard-buttons {
+    width: 100%;
+    padding: 0 10px;
+  }
+
+  .dashboard-button {
+    width: 100% !important;
+    font-size: 16px;
+    padding: 20px 10px;
+  }
+
+  .table-header,
+  .table-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .table-cell {
+    width: 100% !important;
+    flex: none !important;
+    padding: 8px;
+    text-align: left;
+  }
+
+  .table-input, .table-input2 {
+    width: 100% !important;
+    margin: 5px 0;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea,
+  .form-group button {
+    width: 100% !important;
+    font-size: 16px;
+  }
+
+  .filters {
+    flex-direction: column !important;
+    align-items: center;
+    padding: 0 10px;
+  }
+
+  .filters input {
+    min-width: auto !important;
+    width: 100% !important;
+  }
+
+  .nav-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .nav-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  nav button {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  footer {
+    font-size: 14px;
+    padding: 10px;
+  }
+}

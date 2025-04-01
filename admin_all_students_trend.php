@@ -20,16 +20,18 @@ include 'db_connect.php';
       gap: 20px;
       margin: 20px auto;
       width: 90%;
+      justify-content: center;
     }
 
     .filters input {
       padding: 10px;
-      min-width: 350px;
-      margin-left: 20px;
-      
+      min-width: 300px;
+      max-width: 80%;
+      flex: 1;
     }
+
     canvas {
-      width: 100%;
+      width: 100% !important;
       max-width: 1000px;
       margin: 40px auto;
       display: block;
@@ -38,9 +40,22 @@ include 'db_connect.php';
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
+
     .section-title {
       text-align: center;
       margin: 10px;
+    }
+
+    @media screen and (max-width: 600px) {
+      main {
+        padding: 20px;
+      }
+
+      .filters input {
+        min-width: unset;
+        width: 100%;
+        margin-left: 0;
+      }
     }
   </style>
 </head>
@@ -58,7 +73,6 @@ include 'db_connect.php';
   </header>
 
   <main>
-
     <div class="filters">
       <input type="text" id="searchStudent" placeholder="Search by Student ID...">
     </div>

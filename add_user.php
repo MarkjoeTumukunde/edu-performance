@@ -1,130 +1,127 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
 session_start();
 include 'db_connect.php';
-
-$success = false;
-$error = '';
+echo "✅ Connected successfully!";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $role = $_POST['role'];
-  $name = trim($_POST['name']);
-  $email = trim($_POST['email']);
+  $name = $_POST['name'];
+  $email = $_POST['email'];
+  $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-  if ($role === 'student') {
-    $student_id = trim($_POST['student_id']) ?: 'STU' . rand(10000, 99999);
-    $stmt = $conn->prepare("INSERT INTO students (student_id, name, email) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $student_id, $name, $email);
-  } else {
-    $stmt = $conn->prepare("INSERT INTO admin_users (name, email, role) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $name, $email, $role);
+  $role = $_POST['role']; // ← must not be empty
+  if (!in_array($role, ['admin', 'lecturer'])) {
+    echo "<script>alert('❌ Invalid role selected!'); window.history.back();</script>";
+    exit();
+  }
+  $course_units = $_POST['course_units'] ?? '';
+  $check_email = $conn->prepare("SELECT id FROM admin_users WHERE email = ?");
+  $check_email->bind_param("s", $email);
+  $check_email->execute();
+  $check_email->store_result();
+
+  if ($check_email->num_rows > 0) {
+      echo "<script>alert('❌ This email is already registered. Please use another.'); window.history.back();</script>";
+      exit();
   }
 
+  $stmt = $conn->prepare("INSERT INTO admin_users (name, email, password, role, course_units) VALUES (?, ?, ?, ?, ?)");
+  $allowed_roles = ['lecturer', 'administrator', 'it'];
+  if (!in_array($role, $allowed_roles)) {
+    die("❌ Invalid role selected.");
+  }
+  echo "Role submitted: " . htmlspecialchars($role);
+
+
+  $stmt->bind_param("sssss", $name, $email, $hashed_password, $role, $course_units);
+
+
   if ($stmt->execute()) {
-    $success = true;
+    echo "<script>alert('User added successfully!'); window.location.href='admin_view_users.php';</script>";
   } else {
-    $error = "❌ Failed to add user. Email may already exist.";
+    echo "<script>alert('Failed to add user.'); window.history.back();</script>";
   }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Add New User</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add User</title>
+  <link rel="stylesheet" href="style.css">
   <style>
-    .add-container {
-      max-width: 600px;
-      margin: 50px auto;
-      background: #f9f9f9;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: url('Images/body.jpg') no-repeat center center fixed;
+      background-size: cover;
     }
 
-    .add-container h2 {
+    main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: calc(100vh - 100px);
+      padding: 100px 20px 50px;
+    }
+
+    .add-user-box {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .add-user-box h2 {
       text-align: center;
-      margin-bottom: 25px;
+      color: #12254F;
+      margin-bottom: 20px;
     }
 
     .form-group {
-      display: flex;
-      align-items: center;
-      margin-bottom: 18px;
+      margin-bottom: 15px;
     }
 
     .form-group label {
-      flex: 0 0 200px;
+      display: block;
+      margin-bottom: 5px;
       font-weight: bold;
-      margin-right: 15px;
       text-align: left;
     }
 
     .form-group input,
-    .form-group select {
-      flex: 1;
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-
-    .form-group input, #role {
-      margin-left: -60px;
-    }
-
-    #studentIDField {
-      display: none;
-    }
-
-    .add-btn {
-      margin-top: 30px;
-      padding: 12px;
-      width: 20%;
-      background-color: #28a745;
-      color: white;
-      border: none;
-      font-size: 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    #role {
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      flex-grow: 1;
-      box-sizing: border-box;
+    .form-group select,
+    .form-group textarea {
       width: 100%;
-      text-align: center;
-      appearance: none; /* Remove default OS styling */
-      -webkit-appearance: none; /* Safari */
-      -moz-appearance: none; /* Firefox */
-      color: #333;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
     }
 
-    .add-btn:hover {
-      background-color: #218838;
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 16px;
     }
 
-    .status {
-      margin-top: 15px;
-      text-align: center;
-      font-weight: bold;
-    }
-
-    .status.success { color: green; }
-    .status.error { color: red; }
-
-    .back-link {
-      display: block;
-      text-align: center;
-      margin-top: 20px;
-      color: #007bff;
+    button:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
@@ -136,49 +133,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <a href="index.html"><img src="Images/home2.png" alt="Logo" id="logo" /></a>
       <span>ADMIN: ADD USER</span>
       <div class="nav-buttons">
-        <a href="manage_users.php"><button>← Back</button></a>
+        <a href="admin_dashboard.html"><button>← Dashboard</button></a>
       </div>
     </div>
   </nav>
 </header>
 
 <main>
-  <div class="add-container">
-    <h2>➕ Add New User</h2>
-
-    <?php if ($success): ?>
-      <p class="status success">✅ User added successfully!</p>
-    <?php elseif ($error): ?>
-      <p class="status error"><?= $error ?></p>
-    <?php endif; ?>
-
-    <form method="POST">
+  <div class="add-user-box">
+    <h2>➕ Add User</h2>
+    <form action="" method="post">
       <div class="form-group">
-        <label for="role">Select Role:</label>
-        <select name="role" id="role" required onchange="toggleStudentID(this.value)">
-          <option value="">-- Choose Role --</option>
-          <option value="student">Student</option>
-          <option value="lecturer">Lecturer</option>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+
+      <div class="form-group">
+        <label for="role">Role:</label>
+        <select name="role" id="role" required>
+          <option value="">Select Role</option>
           <option value="administrator">Administrator</option>
+          <option value="lecturer">Lecturer</option>
+          <option value="it">IT</option>
         </select>
       </div>
 
-      <div class="form-group" id="studentIDField">
-        <label for="student_id">Student ID (optional):</label>
-        <input type="text" name="student_id" id="student_id" placeholder="Auto-generated if left empty">
-      </div>
-
       <div class="form-group">
-        <label for="name">Full Name:</label>
-        <input type="text" name="name" id="name" required>
+        <label for="course_units">Course Units (comma-separated):</label>
+        <textarea id="course_units" name="course_units" rows="3"></textarea>
       </div>
 
-      <div class="form-group">
-        <label for="email">Email Address:</label>
-        <input type="email" name="email" id="email" required>
-      </div>
-
-      <button type="submit" class="add-btn">Add User</button>
+      <button type="submit">Add User</button>
     </form>
   </div>
 </main>
@@ -186,12 +181,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <footer>
   <p>All rights reserved &copy; 2025 Markjoe | Roland</p>
 </footer>
-
-<script>
-  function toggleStudentID(role) {
-    document.getElementById('studentIDField').style.display = (role === 'student') ? 'flex' : 'none';
-  }
-</script>
 
 </body>
 </html>
