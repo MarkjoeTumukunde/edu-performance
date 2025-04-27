@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $domain = substr(strrchr($email, "@"), 1);
     if (!checkdnsrr($domain, "MX")) {
         echo "<p style='color:red; text-align:center;'>❌ Email domain does not exist.</p>";
-        echo "<div style='text-align:center;'><a href='admin_register.html' style='text-decoration:none; background:#007bff; padding:10px 20px; color:#fff; border-radius:5px;'>Go Back</a></div>";
+        echo "<div style='text-align:center;'><a href='register_admin.html' style='text-decoration:none; background:#007bff; padding:10px 20px; color:#fff; border-radius:5px;'>Go Back</a></div>";
         exit();
     }
 
@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($check->num_rows > 0) {
         echo "<p style='color:red; text-align:center;'>❌ Email is already registered.</p>";
-        echo "<div style='text-align:center;'><a href='admin_register.html' style='text-decoration:none; background:#007bff; padding:10px 20px; color:#fff; border-radius:5px;'>Go Back</a></div>";
+        echo "<div style='text-align:center;'><a href='register_admin.html' style='text-decoration:none; background:#007bff; padding:10px 20px; color:#fff; border-radius:5px;'>Go Back</a></div>";
     } else {
         $hashed_password = password_hash($raw_password, PASSWORD_DEFAULT);
 
@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($stmt->execute()) {
             echo "<div style='max-width: 500px; margin: 100px auto; text-align:center; font-family: Arial;'>
-                    <h2 style='color:green;'>🎉 Registration Successful!</h2>
+                    <h2 style='color:green;'>Registration Successful!</h2>
                     <p>$name has been registered as <strong>$role</strong>.</p>
                     <a href='login.html' style='background:#007bff; color:#fff; padding:10px 20px; border-radius:5px; text-decoration:none;'>Proceed to Login</a>
                   </div>";

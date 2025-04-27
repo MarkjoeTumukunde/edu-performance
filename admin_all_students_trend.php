@@ -6,7 +6,7 @@ include 'db_connect.php';
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>All Students Performance Trend - Admin</title>
+  <title>All Students Performance Trend</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
@@ -25,8 +25,8 @@ include 'db_connect.php';
 
     .filters input {
       padding: 10px;
-      min-width: 300px;
-      max-width: 80%;
+      min-width: 500px;
+      max-width: 66%;
       flex: 1;
     }
 
@@ -53,7 +53,7 @@ include 'db_connect.php';
 
       .filters input {
         min-width: unset;
-        width: 100%;
+        width: 80%;
         margin-left: 0;
       }
     }
@@ -64,7 +64,7 @@ include 'db_connect.php';
     <nav>
       <div class="nav-container">
         <a href="index.html"><img src="Images/home2.png" alt="Logo" id="logo" /></a>
-        <span>ADMIN: STUDENT PERFORMANCE TRENDS</span>
+        <span>STUDENT PERFORMANCE TRENDS</span>
         <div class="nav-buttons">
           <a href="admin_view_student_performance.php"><button>← Back</button></a>
         </div>

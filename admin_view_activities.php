@@ -12,16 +12,22 @@ $selected_activity = $_GET['activity'] ?? 'all';
 // Get unique activity names for filter dropdown
 $activity_result = $conn->query("SELECT DISTINCT activity_name FROM student_activity_status ORDER BY activity_name ASC");
 
-// Build dynamic SQL
-$sql = "SELECT s.student_id, s.name, s.year, a.activity_name, a.is_participating, a.last_updated
+// Build dynamic SQL for summary view
+$sql = "SELECT 
+            s.student_id, 
+            s.name, 
+            s.year, 
+            GROUP_CONCAT(a.activity_name ORDER BY a.activity_name ASC SEPARATOR ', ') AS activities,
+            MAX(a.last_updated) AS last_updated
         FROM students s
-        JOIN student_activity_status a ON s.student_id = a.student_id";
+        JOIN student_activity_status a ON s.student_id = a.student_id
+        WHERE a.is_participating = 1";
 
 $conditions = [];
 $params = [];
 $types = "";
 
-// Add conditions dynamically
+// Add filters dynamically
 if ($selected_year !== 'all') {
     $conditions[] = "s.year = ?";
     $params[] = $selected_year;
@@ -34,8 +40,10 @@ if ($selected_activity !== 'all') {
 }
 
 if (count($conditions) > 0) {
-    $sql .= " WHERE " . implode(" AND ", $conditions);
+    $sql .= " AND " . implode(" AND ", $conditions);
 }
+
+$sql .= " GROUP BY s.student_id, s.name, s.year";
 
 $stmt = $conn->prepare($sql);
 if ($params) {
@@ -53,12 +61,10 @@ $result = $stmt->get_result();
   <title>View Student Activities - Admin</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-
     .complaint-form-container {
       width: 85%;
       margin-top: -30px;
     }
-
 
     .filter-form {
       margin: 30px auto;
@@ -103,16 +109,6 @@ $result = $stmt->get_result();
     .activity-table th {
       background-color: #f0f0f0;
     }
-
-    .status-yes {
-      color: green;
-      font-weight: bold;
-    }
-
-    .status-no {
-      color: red;
-      font-weight: bold;
-    }
   </style>
 </head>
 <body>
@@ -120,7 +116,7 @@ $result = $stmt->get_result();
     <nav>
       <div class="nav-container">
         <a href="index.html"><img src="Images/home2.png" alt="Logo" id="logo" /></a>
-        <span>ADMIN</span>
+        <span>STUDENT ACTIVITIES</span>
         <div class="nav-buttons">
           <a href="admin_dashboard.html"><button>BACK</button></a>
         </div>
@@ -163,8 +159,7 @@ $result = $stmt->get_result();
               <th>Student ID</th>
               <th>Name</th>
               <th>Year</th>
-              <th>Activity</th>
-              <th>Status</th>
+              <th>Participating In</th>
               <th>Last Updated</th>
             </tr>
           </thead>
@@ -174,19 +169,14 @@ $result = $stmt->get_result();
                 <td><?= htmlspecialchars($row['student_id']) ?></td>
                 <td><?= htmlspecialchars($row['name']) ?></td>
                 <td><?= 'Year ' . htmlspecialchars($row['year']) ?></td>
-                <td><?= htmlspecialchars($row['activity_name']) ?></td>
-                <td>
-                  <?= $row['is_participating']
-                      ? '<span class="status-yes">Participating</span>'
-                      : '<span class="status-no">Not Participating</span>' ?>
-                </td>
+                <td><?= htmlspecialchars($row['activities'] ?: 'None') ?></td>
                 <td><?= htmlspecialchars($row['last_updated']) ?></td>
               </tr>
             <?php endwhile; ?>
           </tbody>
         </table>
       <?php else: ?>
-        <p style="text-align:center;">No activity data found for the selected filters.</p>
+        <p style="text-align:center;">No participation data found for the selected filters.</p>
       <?php endif; ?>
     </section>
   </main>

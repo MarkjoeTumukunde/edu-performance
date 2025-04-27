@@ -5,7 +5,7 @@ ini_set('display_errors', 1);
 include 'db_connect.php';
 session_start();
 
-// ✅ Handle individual reply submission (same file)
+// Handle individual reply submission (same file)
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['complaint_id']) && isset($_POST['remark'])) {
     $complaint_id = $_POST['complaint_id'];
     $remark = trim($_POST['remark']);
@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['complaint_id']) && is
     }
 }
 
-// ✅ Fetch all complaints
+// Fetch all complaints
 $sql = "SELECT * FROM student_complaints ORDER BY submitted_at DESC";
 $result = $conn->query($sql);
 ?>
@@ -113,7 +113,7 @@ $result = $conn->query($sql);
       <div class="complaints-header">All Submitted Complaints</div>
 
       <?php if (isset($_GET['success'])): ?>
-        <div class="success-message">✅ Complaint remark updated successfully!</div>
+        <div class="success-message">Complaint remark updated successfully!</div>
       <?php endif; ?>
 
       <?php if ($result->num_rows > 0): ?>

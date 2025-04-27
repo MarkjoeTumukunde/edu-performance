@@ -3,58 +3,60 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-
 session_start();
 include 'db_connect.php';
 echo "✅ Connected successfully!";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $name = $_POST['name'];
-  $email = $_POST['email'];
-  $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $role = $_POST['role'];
 
-  $role = $_POST['role']; // ← must not be empty
-  if (!in_array($role, ['admin', 'lecturer'])) {
-    echo "<script>alert('❌ Invalid role selected!'); window.history.back();</script>";
-    exit();
-  }
-  $course_units = $_POST['course_units'] ?? '';
-  $check_email = $conn->prepare("SELECT id FROM admin_users WHERE email = ?");
-  $check_email->bind_param("s", $email);
-  $check_email->execute();
-  $check_email->store_result();
+    // ✅ Correct allowed roles
+    $allowed_roles = ['lecturer', 'administrator', 'it'];
+    if (!in_array($role, $allowed_roles)) {
+        echo "<script>alert('❌ Invalid role selected!'); window.history.back();</script>";
+        exit();
+    }
 
-  if ($check_email->num_rows > 0) {
-      echo "<script>alert('❌ This email is already registered. Please use another.'); window.history.back();</script>";
-      exit();
-  }
+    // ✅ Only lecturers get course_units
+    $course_units = ($role === 'lecturer') ? ($_POST['course_units'] ?? '') : '';
 
-  $stmt = $conn->prepare("INSERT INTO admin_users (name, email, password, role, course_units) VALUES (?, ?, ?, ?, ?)");
-  $allowed_roles = ['lecturer', 'administrator', 'it'];
-  if (!in_array($role, $allowed_roles)) {
-    die("❌ Invalid role selected.");
-  }
-  echo "Role submitted: " . htmlspecialchars($role);
+    // Check for duplicate email
+    $check_email = $conn->prepare("SELECT id FROM admin_users WHERE email = ?");
+    $check_email->bind_param("s", $email);
+    $check_email->execute();
+    $check_email->store_result();
 
+    if ($check_email->num_rows > 0) {
+        echo "<script>alert('❌ This email is already registered. Please use another.'); window.history.back();</script>";
+        exit();
+    }
 
-  $stmt->bind_param("sssss", $name, $email, $hashed_password, $role, $course_units);
+    // Insert user
+    $stmt = $conn->prepare("INSERT INTO admin_users (name, email, password, role, course_units) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssss", $name, $email, $hashed_password, $role, $course_units);
 
-
-  if ($stmt->execute()) {
-    echo "<script>alert('User added successfully!'); window.location.href='admin_view_users.php';</script>";
-  } else {
-    echo "<script>alert('Failed to add user.'); window.history.back();</script>";
-  }
+    if ($stmt->execute()) {
+        echo "<script>
+                alert('✅ User added successfully!');
+                window.location.href='admin_view_users.php';
+              </script>";
+        exit();
+    } else {
+        echo "<script>alert('❌ Failed to add user.'); window.history.back();</script>";
+    }
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Add User</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -145,17 +147,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form action="" method="post">
       <div class="form-group">
         <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
+        <input type="text" id="name" name="name" required />
       </div>
 
       <div class="form-group">
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
+        <input type="email" id="email" name="email" required />
       </div>
 
       <div class="form-group">
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
+        <input type="password" id="password" name="password" required />
       </div>
 
       <div class="form-group">
@@ -168,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </select>
       </div>
 
-      <div class="form-group">
+      <div class="form-group" id="course-units-group">
         <label for="course_units">Course Units (comma-separated):</label>
         <textarea id="course_units" name="course_units" rows="3"></textarea>
       </div>
@@ -181,6 +183,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <footer>
   <p>All rights reserved &copy; 2025 Markjoe | Roland</p>
 </footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const roleSelect = document.getElementById("role");
+  const courseUnitsGroup = document.getElementById("course-units-group");
+
+  function toggleCourseUnitsField() {
+    courseUnitsGroup.style.display = (roleSelect.value === "lecturer") ? "block" : "none";
+  }
+
+  roleSelect.addEventListener("change", toggleCourseUnitsField);
+  toggleCourseUnitsField(); // Initial state
+});
+</script>
 
 </body>
 </html>

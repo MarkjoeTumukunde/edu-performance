@@ -43,7 +43,8 @@ $adminCount = $conn->query("SELECT COUNT(*) AS total FROM admin_users WHERE role
     .filter-form {
       text-align: center;
       margin-left: 110px;
-      padding-right: 70px;
+      margin-right: 70px;
+
     }
 
     .filter-form select, .filter-form button {
@@ -138,7 +139,7 @@ $adminCount = $conn->query("SELECT COUNT(*) AS total FROM admin_users WHERE role
     border-radius: 0;
     flex-grow: 1;
     box-sizing: border-box;
-    width: 755px;
+    width: 820px;
     text-align: center;
     margin-right: 20px;
     appearance: none; /* Remove default OS styling */
@@ -154,8 +155,9 @@ $adminCount = $conn->query("SELECT COUNT(*) AS total FROM admin_users WHERE role
   <nav>
     <div class="nav-container">
       <a href="index.html"><img src="Images/home2.png" alt="Logo" id="logo" /></a>
-      <span>ADMIN: VIEW USERS</span>
+      <span>USERS</span>
       <div class="nav-buttons">
+        <a href="add_user.php"><button>Back</button></a>
         <a href="admin_dashboard.html"><button>Dashboard</button></a>
       </div>
     </div>

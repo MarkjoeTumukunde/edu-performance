@@ -178,7 +178,7 @@ if ($filter_role === 'lecturer' || $filter_role === 'administrator' || $filter_r
   <nav>
     <div class="nav-container">
       <a href="index.html"><img src="Images/home2.png" alt="Logo" id="logo" /></a>
-      <span>ADMIN: MANAGE USERS</span>
+      <span>MANAGE USERS</span>
       <div class="nav-buttons">
         <a href="admin_dashboard.html"><button>Dashboard</button></a>
       </div>

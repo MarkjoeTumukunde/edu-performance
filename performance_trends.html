@@ -35,7 +35,7 @@
       </div>
 
       <!-- Chart Canvas -->
-      <div style="width: 100%; max-width: 800px; margin: 0 auto;">
+      <div style="width: 100%; max-width: 1200px; margin: 0 auto;">
         <canvas id="trendChart"></canvas>
       </div>
       <div id="feedback" style="margin-top: 20px; font-size: 16px; display: flex; margin-left: 150px;"></div>
@@ -112,16 +112,21 @@
       if (retakes.length === 0 && weak.length === 0) {
         return "<p style='color: green;'><strong>Great job!</strong> You are performing well in all subjects.</p>";
       }
-  
-      let html = "<h4 style='margin-top:20px;'>Suggestions:</h4><ul>";
+
+      let html = "<div style='margin-top:20px; display: flex; align-items: center; gap: 10px;'>";
+      html += "<h4 style='margin: 0;'>Suggestions:</h4>";
+      html += "<ul style='list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px;'>";
+
       if (retakes.length > 0) {
         html += "<li style='color: red;'>You need to retake: <strong>" + retakes.join(", ") + "</strong></li>";
       }
       if (weak.length > 0) {
         html += "<li style='color: #12254F;'>Consider improving in: <strong>" + weak.join(", ") + "</strong></li>";
       }
-      html += "</ul>";
+
+      html += "</ul></div>";
       return html;
+
     }
   
     const ctx = document.getElementById("trendChart").getContext("2d");
@@ -164,7 +169,7 @@
       }
     });
   
-    // ✅ Load data on page load
+    // Load data on page load
     fetchChartData();
   </script>
   

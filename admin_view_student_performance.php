@@ -193,7 +193,7 @@ while ($student = $students->fetch_assoc()) {
   <nav>
     <div class="nav-container">
       <a href="index.html"><img src="Images/home2.png" alt="Logo" id="logo" /></a>
-      <span>ADMIN: STUDENT PERFORMANCE</span>
+      <span>STUDENT PERFORMANCE</span>
       <div class="nav-buttons">
         <a href="admin_dashboard.html"><button>← Dashboard</button></a>
       </div>

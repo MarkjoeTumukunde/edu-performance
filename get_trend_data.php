@@ -16,7 +16,7 @@ if ($conn->connect_error) {
     exit;
 }
 
-// ✅ Get student ID from session (not POST)
+// Get student ID from session (not POST)
 $student_id = $_SESSION['student_id'] ?? null;
 
 if (!$student_id) {
@@ -24,7 +24,7 @@ if (!$student_id) {
     exit;
 }
 
-// ✅ Fetch data using the new one-row-per-unit structure
+// Fetch data using the new one-row-per-unit structure
 $sql = "SELECT course_unit, marks FROM student_marks WHERE student_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $student_id);
@@ -44,7 +44,7 @@ while ($row = $result->fetch_assoc()) {
     }
 }
 
-// ✅ Respond with data or error
+// Respond with data or error
 if (empty($labels)) {
     echo json_encode([
         "labels" => [],

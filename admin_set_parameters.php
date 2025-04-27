@@ -5,7 +5,7 @@ include 'db_connect.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $params = [
     'academic_year' => $_POST['academic_year'] ?? '',
-    'current_term' => $_POST['current_term'] ?? '',
+    'current_term' => $_POST['current_semster'] ?? '',
     'pass_mark' => $_POST['pass_mark'] ?? ''
   ];
 
@@ -15,13 +15,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("ss", $key, $value);
     $stmt->execute();
   }
-  $message = "✅ Settings updated successfully.";
+  $message = "Settings updated successfully.";
 }
 
 // Fetch current values
 $settings = [
   'academic_year' => '',
-  'current_term' => '',
+  'current_semster' => '',
   'pass_mark' => ''
 ];
 
@@ -110,8 +110,8 @@ while ($row = $result->fetch_assoc()) {
         <input type="text" id="academic_year" name="academic_year" value="<?= htmlspecialchars($settings['academic_year']) ?>" required>
       </div>
       <div class="form-group">
-        <label for="current_term">Current Term</label>
-        <input type="text" id="current_term" name="current_term" value="<?= htmlspecialchars($settings['current_term']) ?>" required>
+        <label for="current_term">Current Semester</label>
+        <input type="text" id="current_term" name="current_term" value="<?= htmlspecialchars($settings['current_semster']) ?>" required>
       </div>
       <div class="form-group">
         <label for="pass_mark">Minimum Pass Mark</label>

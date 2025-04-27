@@ -65,7 +65,9 @@ if ($result->num_rows > 0) {
             <div class="table-row">
               <div class="table-cell"><?php echo htmlspecialchars($row['date']); ?></div>
               <div class="table-cell"><?php echo htmlspecialchars($row['course_unit']); ?></div>
-              <div class="table-cell"><?php echo ucfirst($row['status']); ?></div>
+              <div class="table-cell" style="color: <?php echo ($row['status'] === 'present') ? 'green' : (($row['status'] === 'absent') ? 'red' : 'black'); ?>">
+                <?php echo ucfirst($row['status']); ?>
+            </div>
               <div class="table-cell"><?php echo htmlspecialchars($row['lecturer']); ?></div>
             </div>
           <?php endwhile; ?>

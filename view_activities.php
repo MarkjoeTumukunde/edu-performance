@@ -2,7 +2,6 @@
 session_start();
 
 $student_id = $_SESSION['student_id'] ?? '';
-$student_name = $_SESSION['student_name'] ?? '';
 
 if (empty($student_id)) {
     echo "<p style='color: red; text-align: center;'>❌ You must be logged in to view activities.</p>";
@@ -11,6 +10,16 @@ if (empty($student_id)) {
 
 include 'db_connect.php';
 
+// Fetch student name
+$sql = "SELECT name FROM students WHERE student_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $student_id);
+$stmt->execute();
+$stmt->bind_result($student_name);
+$stmt->fetch();
+$stmt->close();
+
+// Now fetch activity participation
 $sql = "SELECT activity_name, is_participating FROM student_activity_status WHERE student_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $student_id);
@@ -23,6 +32,7 @@ while ($row = $result->fetch_assoc()) {
 }
 
 $conn->close();
+
 ?>
 
 <!DOCTYPE html>
@@ -47,9 +57,9 @@ $conn->close();
 
   <main class="marksheet-main">
     <section class="marksheet-container">
-      <div class="student-info" style="text-align: left; margin-bottom: 20px;">
-        <p style="font-size: 20px; margin: 5px 0;"><strong>Name:</strong> <span style="color:#007bff;"><?php echo htmlspecialchars($student_name); ?></span></p>
-        <p style="font-size: 18px; margin: 0;"><strong>Student ID:</strong> <span style="color:#007bff;"><?php echo htmlspecialchars($student_id); ?></span></p>
+      <div class="student-info" style="text-align: left; margin-bottom: 20px; display: flex;">
+        <p style="font-size: 20px; margin-right: 200px;"><strong>Name:</strong> <span style="color:#007bff;"><?php echo htmlspecialchars($student_name); ?></span></p>
+        <p style="font-size: 18px; "><strong>Student ID:</strong> <span style="color:#007bff;"><?php echo htmlspecialchars($student_id); ?></span></p>
       </div>
 
       <div class="marks-table" style="background:#fff; border-radius: 10px; padding: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.05); color: #000;">

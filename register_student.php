@@ -1,4 +1,10 @@
 <?php
+include 'db_connect.php';
+
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include 'db_connect.php';
@@ -73,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </style>";
 
             echo "<div class='success-box'>
-                <h2>🎉 Student Registered Successfully!</h2>
+                <h2>Student Registered Successfully!</h2>
                 <p><strong>Your Student ID is:</strong> <span style='color: #007bff;'>$student_id</span></p>
                 <p>Please copy and save this ID. It will be used for login and accessing your academic records.</p>
                 <a href='login.html'>Proceed to Login</a>

@@ -69,31 +69,45 @@
   <script>
     // Auto-fill student name, course, and year
     document.getElementById("student_id").addEventListener("blur", function () {
-      const studentId = this.value.trim();
-      if (!studentId) return;
-  
-      fetch("get_student_details.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({ student_id: studentId }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.error) {
-            alert("\u274C " + data.error);
-            document.getElementById("student_name").value = "";
-            document.getElementById("course").value = "";
-            document.getElementById("year").value = "";
-          } else {
-            document.getElementById("student_name").value = data.name;
-            document.getElementById("course").value = data.course;
-            document.getElementById("year").value = data.year || "";
-          }
-        })
-        .catch((err) => {
-          alert("Fetch error: " + err);
-        });
+  const studentId = this.value.trim();
+  if (!studentId) return;
+
+  fetch("get_student_details.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({ student_id: studentId }),
+  })
+    .then((res) => {
+      console.log('Response Status:', res.status); // Log status for debugging
+      return res.text(); // Get the raw response as text
+    })
+    .then((text) => {
+      console.log('Response Text:', text); // Log the raw response for debugging
+      try {
+        const data = JSON.parse(text); // Manually parse the response to catch errors
+        console.log('Parsed Data:', data); // Log parsed data
+        if (data.error) {
+          alert("\u274C " + data.error);
+          document.getElementById("student_name").value = "";
+          document.getElementById("course").value = "";
+          document.getElementById("year").value = "";
+        } else {
+          document.getElementById("student_name").value = data.name || "";
+          document.getElementById("course").value = data.course || "";
+          document.getElementById("year").value = data.year || "";
+        }
+      } catch (err) {
+        console.error("JSON Parsing Error:", err);
+        alert("Error parsing response: " + err.message);
+      }
+    })
+    .catch((err) => {
+      console.error("Fetch error:", err); // Log the error for debugging
+      alert("Fetch error: " + err);
     });
+});
+
+
   
     // Load lecturer's course units
     window.addEventListener("DOMContentLoaded", function () {
